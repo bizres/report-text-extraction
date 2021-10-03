@@ -29,10 +29,10 @@ def post_extractor():
         return jsonify({'error': 'Bad Request', 'message': 'No selected file'}), 400
 
     if not allowed_file(file.filename, {'pdf'}):
-        return jsonify({'error': 'Unsupported Media Type', 'message': 'Unsupported file extention'}), 415
+        return jsonify({'error': 'Unsupported Media Type', 'message': 'Unsupported file extension'}), 415
 
     return pdf.toText(file), 200
 
-def allowed_file(filename, allowed_extentions):
+def allowed_file(filename, allowed_extensions):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in allowed_extentions
+           filename.rsplit('.', 1)[1].lower() in allowed_extensions
