@@ -18,7 +18,10 @@ cd report-text-extraction
 # install dependencies
 pipenv install --ignore-pipfile
 
-#configure server
+# activate Pipenv shell
+pipenv shell
+
+# configure server
 set flask_env=development
 set flask_app=app.py
 
