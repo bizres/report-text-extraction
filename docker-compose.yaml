@@ -1,0 +1,23 @@
+---
+version: '3.8'
+
+volumes:
+  report_data:
+
+services:
+  text-extractor:
+    build:
+      context: .
+      target: dev
+    image: bizres-text-extractor:dev
+    container_name: bizres-text-extractor-dev
+    restart: unless-stopped
+    environment:
+      FLASK_ENV: development
+      FLASK_APP: app.py
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/usr/src/app
+      - report_data:/usr/src/app/data
+    working_dir: /usr/src/app
