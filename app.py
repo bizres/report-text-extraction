@@ -4,6 +4,7 @@
 from flask import Flask, request, jsonify, send_from_directory, redirect # , send_file
 from flask_cors import CORS
 import pdf
+import lng
 
 app = Flask(__name__)
 CORS(app)
@@ -31,7 +32,10 @@ def post_extractor():
     if not allowed_file(file.filename, {'pdf'}):
         return jsonify({'error': 'Unsupported Media Type', 'message': 'Unsupported file extension'}), 415
 
-    return pdf.toText(file), 200
+    text = pdf.toText(file)
+    lang = lng.detect(text)
+    
+    return '\n'.join([lang, text]), 200
 
 def allowed_file(filename, allowed_extensions):
     return '.' in filename and \
