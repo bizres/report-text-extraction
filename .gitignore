@@ -129,4 +129,7 @@ dmypy.json
 .pyre/
 
 # Webstorm
-./.idea
+./.idea/*
+/.idea/modules.xml
+/.idea/report-text-extraction.iml
+/.idea/vcs.xml

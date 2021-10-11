@@ -8,6 +8,7 @@ pdfplumber = "==0.5.28"
 flask = "*"
 cors = "*"
 flask-cors = "*"
+waitress = "*"
 
 [dev-packages]
 
