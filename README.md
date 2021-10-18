@@ -21,6 +21,9 @@ pipenv install --ignore-pipfile
 # activate Pipenv shell
 pipenv shell
 
+# install pycld2 0.42
+pipenv install https://github.com/aboSamoor/pycld2/zipball/e3ac86ed4d4902e912691c1531d0c5645382a726
+
 # configure server
 set flask_env=development
 set flask_app=app.py
