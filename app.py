@@ -1,21 +1,26 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
-from flask import Flask, request, jsonify, send_from_directory, redirect # , send_file
+from flask import Flask, request, jsonify, send_from_directory, redirect  # , send_file
 from flask_cors import CORS
-import pdf
+
 import lng
+import pdf
+import storage
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route('/docs')
 def send_docs_root():
     return redirect("docs/index.html", code=308)
 
+
 @app.route('/docs/<path:path>')
 def send_docs(path):
     return send_from_directory('docs', path)
+
 
 @app.post("/extractor")
 def post_extractor():
@@ -34,8 +39,11 @@ def post_extractor():
 
     text = pdf.toText(file)
     lang = lng.detect(text)
-    
-    return '\n'.join([lang, text]), 200
+
+    uuid = storage.save_files(file, text)
+
+    return jsonify({'lang': lang, 'pdf': uuid + ".pdf", 'text': uuid + '.txt'}), 200
+
 
 def allowed_file(filename, allowed_extensions):
     return '.' in filename and \
