@@ -1,14 +1,17 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
+import os
 
 from flask import Flask, request, jsonify, send_from_directory, redirect  # , send_file
 from flask_cors import CORS
+from flask_httpauth import HTTPBasicAuth
 
 import lng
 import pdf
 import storage
 
 app = Flask(__name__)
+auth = HTTPBasicAuth()
 CORS(app)
 
 
@@ -23,6 +26,7 @@ def send_docs(path):
 
 
 @app.post("/extractor")
+@auth.login_required()
 def post_extractor():
     if 'file' not in request.files:
         return jsonify({'error': 'Bad Request', 'message': 'File is missing'}), 400
@@ -48,3 +52,10 @@ def post_extractor():
 def allowed_file(filename, allowed_extensions):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in allowed_extensions
+
+
+@auth.verify_password
+def authenticate(username, password):
+    assert ('BASIC_AUTH_USER' in os.environ)
+    assert ('BASIC_AUTH_PWD' in os.environ)
+    return (username == os.environ['BASIC_AUTH_USER']) and (password == os.environ['BASIC_AUTH_PWD'])

@@ -15,6 +15,8 @@ services:
     environment:
       FLASK_ENV: development
       FLASK_APP: app.py
+      BASIC_AUTH_USER: bizres
+      BASIC_AUTH_PWD: secret
     ports:
       - 5000:5000
     volumes:
