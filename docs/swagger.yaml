@@ -13,12 +13,24 @@ paths:
         $ref: '#/components/requestBodies/File'
       responses:
         '200':
-          description: A TXT file.
+          description: Returns a JSON object
           content:
-            text/plain:
-              schema: 
-                type: string
-                # format: binary
+            application/json:
+              schema:
+                type: object
+                properties:
+                  lang:
+                    type: string
+                    description: The language code (ie. 'en', 'de')
+                    example: 'de'
+                  pdf:
+                    type: string
+                    description: The pdf filename
+                    example: 'cc596f51-032a-404f-8445-1e4e2ea9990a.pdf'
+                  text:
+                    type: string
+                    description: The extracted text filename
+                    example: 'cc596f51-032a-404f-8445-1e4e2ea9990a.txt'
         '400':
           $ref: '#/components/responses/ServerError'
         '415':
