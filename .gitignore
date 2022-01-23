@@ -1,6 +1,8 @@
 ## project specific ignored file
 !./data/.gitkeep
 ./data/*
+config.ini
+data
 
 
 # Byte-compiled / optimized / DLL files
