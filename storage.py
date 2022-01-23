@@ -6,6 +6,10 @@ import uuid
 DEFAULT_STORAGE_DIR = './data'
 
 
+def dir():
+    return os.environ['STORAGE_DIR'] if 'STORAGE_DIR' in os.environ else DEFAULT_STORAGE_DIR
+
+
 def save_files(pdf, text):
     digest = uuid.uuid4()
     save_text(digest, text)
@@ -27,5 +31,5 @@ def create_file_name(digest, extension):
 
 
 def write_file(file, file_name):
-    with open(file_name, 'w') as f:
+    with open(file_name, 'w', encoding="utf8") as f:
         f.write(file)
