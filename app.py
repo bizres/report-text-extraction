@@ -9,6 +9,7 @@ from flask_httpauth import HTTPBasicAuth
 import lng
 import pdf
 import storage
+import services
 
 app = Flask(__name__)
 auth = HTTPBasicAuth()
@@ -24,6 +25,12 @@ def send_docs_root():
 def send_docs(path):
     return send_from_directory('docs', path)
 
+
+@app.post('/pdfstotext')
+@app.get('/pdfstotext')
+@auth.login_required()
+def post_pdfstotext():
+    services.airtable_pdfs_to_local_txt()
 
 @app.post("/extractor")
 @auth.login_required()
