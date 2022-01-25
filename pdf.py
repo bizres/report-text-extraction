@@ -1,8 +1,20 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 
-import pdfplumber
+from pdfminer.high_level import extract_text
+import io
 
-def toText(file):
-    with pdfplumber.open(file) as pdf:
-        return '\n'.join([page.extract_text() for page in pdf.pages])
+
+def to_text(data):
+    file = data
+    if isinstance(file, io.BytesIO):
+        file.seek(0)
+    else:
+        file = io.BytesIO(file.read())
+
+    try:
+        text = extract_text(file)
+    except:
+        text = None
+        
+    return text
