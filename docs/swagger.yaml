@@ -4,33 +4,14 @@ info:
   description: Extracts plain text from provided PDF file
   version: 1.0.0
 paths:
-  /extractor:
-    post:
-      summary: Uploads PDF file and retrieves extracted text as a file.
+  /extract:
+    get:
+      summary: Starts Report extraction. Downloads PDFs from Airtable, extracts text, and generates meta data. Resulting PDF, TXT, and JSON files are stored then locally.
       tags:
         - PDF
-      requestBody:
-        $ref: '#/components/requestBodies/File'
       responses:
-        '200':
-          description: Returns a JSON object
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  lang:
-                    type: string
-                    description: The language code (ie. 'en', 'de')
-                    example: 'de'
-                  pdf:
-                    type: string
-                    description: The pdf filename
-                    example: 'cc596f51-032a-404f-8445-1e4e2ea9990a.pdf'
-                  text:
-                    type: string
-                    description: The extracted text filename
-                    example: 'cc596f51-032a-404f-8445-1e4e2ea9990a.txt'
+        '202':
+          description: Accepted. Returns nothing. Starts Report extraction in background.
         '400':
           $ref: '#/components/responses/ServerError'
         '415':
@@ -38,18 +19,6 @@ paths:
         '500':
           $ref: '#/components/responses/ServerError'
 components:
-  requestBodies:
-    File:
-      required: true
-      content:
-        multipart/form-data:
-          schema:
-            type: object
-            properties:
-              file:
-                type: string
-                format: binary
-
   responses:
     ServerError:
       description: Server Error
