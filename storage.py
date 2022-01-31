@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding:utf-8 -*-
 import os
-import uuid
+from collections import namedtuple
+from pathlib import Path
 
 DEFAULT_STORAGE_DIR = './data'
 
@@ -9,27 +10,19 @@ DEFAULT_STORAGE_DIR = './data'
 def dir():
     return os.environ['STORAGE_DIR'] if 'STORAGE_DIR' in os.environ else DEFAULT_STORAGE_DIR
 
+def txt_dir():
+    return os.path.join(dir(), 'txt')
 
-def save_files(pdf, text):
-    digest = uuid.uuid4()
-    save_text(digest, text)
-    save_pdf(digest, pdf)
-    return str(digest)
+def pdf_dir():
+    return os.path.join(dir(), 'pdf')
 
+def meta_dir():
+    return os.path.join(dir(), 'meta')
 
-def save_pdf(digest, file):
-    file.save(create_file_name(digest, 'pdf'))
+def dirs():
+    DirsTuple = namedtuple('Dirs', 'pdf txt meta')
+    return DirsTuple(pdf=pdf_dir(), txt=txt_dir(), meta=meta_dir())
 
-
-def save_text(digest, file):
-    write_file(file, create_file_name(digest, 'txt'))
-
-
-def create_file_name(digest, extension):
-    storage_dir = os.environ['STORAGE_DIR'] if 'STORAGE_DIR' in os.environ else DEFAULT_STORAGE_DIR
-    return "{dir}/{hash}.{ext}".format(dir=storage_dir, hash=digest, ext=extension)
-
-
-def write_file(file, file_name):
-    with open(file_name, 'w', encoding="utf8") as f:
-        f.write(file)
+def ensure_path(file_path):
+    directory = os.path.dirname(file_path)
+    Path(directory).mkdir(parents=True, exist_ok=True)
